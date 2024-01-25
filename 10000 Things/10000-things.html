@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10000 Things</title>
+    <script>
+        "use strict";
+        
+        //variables
+        let ctx;
+        let canvas;
+        let input;
+        let canvasDimensions;
+        let things = [];
+
+        //methods
+        const init = () => {
+            canvas = document.querySelector("canvas");
+            input = document.querySelector("input");
+            ctx = canvas.getContext("2d");
+            canvasDimensions = canvas.getBoundingClientRect();
+
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = "black";
+            ctx.fillStyle = "black";
+
+            for(let i=0; i < 10000; i++){
+                generateShape();
+            }
+            drawShape(0);
+
+            input.onchange = () =>{
+            drawShape(input.value);
+            };
+        }
+        const generateShape = () => {
+            const sides = randomInt(8,20);
+            let coordinates = [];
+            for(let i=0; i < sides; i++){
+                coordinates.push([randomInt(0, canvas.width), randomInt(0, canvas.height)]);
+            }
+            things.push(coordinates);
+        }
+        const drawShape = index => {
+            ctx.clearRect(0,0,canvas.width, canvas.height);
+            if(index < things.length){
+                index = Math.floor(index);
+                ctx.save();
+                ctx.beginPath();
+                ctx.moveTo(things[index][0][0],things[index][0][1]);
+                for(let i=1; i < things[index].length; i++){
+                    ctx.lineTo(things[index][i][0],things[index][i][1]);
+                }
+                ctx.lineTo(things[index][0][0],things[index][0][1]);
+                ctx.stroke();
+                ctx.fill();
+                ctx.closePath();
+                ctx.restore();
+            }
+        }
+        const randomInt = (min, max) => {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        window.onload = init;
+    </script>
+</head>
+<body>
+    <canvas width="1000" height="600"></canvas>
+    <h3>Type a number between 0 and 9999:</h3>
+    <input type="text" maxlength="100" autofocus value="0">
+</body>
+</html>
