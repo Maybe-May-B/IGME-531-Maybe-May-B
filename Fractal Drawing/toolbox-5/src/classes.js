@@ -37,6 +37,9 @@ class Shape {
             this.points.push(this.points[0]);
         }
     }
+    remove = (index) => {
+        this.points.splice(index,1);
+    }
     max = (property,roof) => {
         let max = roof;
         this.points.forEach(point => {
@@ -61,24 +64,28 @@ class Fractal {
         this.rules = rules;
         this.axiom = axiom;
         this.string = axiom;
-        this.results = results;
-        this.properties = properties;
+        for (const method in results) {
+            this[method] = method;
+        }
+        for (const property in properties) {
+            this[property] = properties;
+        }
     }
 
     iterate = (iterations) => {
-        let iteratedString = '';
         for(let i=0; i<iterations;i++){
+            let iteratedString = '';
             for(let char=0; char<this.string.length;char++){
-                iteratedString += rules[this.string[char]];
+                iteratedString += this.rules[this.string[char]] || this.string[char];
             }
+            this.string=iteratedString;
         }
-        this.string=iteratedString;
         return this.string;
     }
     reset = () => this.string = this.axiom;
     interpret = () => {
         for(let i=0; i<this.string.length;i++){
-            const result = this.results[this.string[i]];
+            const result = this[this.string[i]];
             result();
         }
     }

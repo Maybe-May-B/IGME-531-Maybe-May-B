@@ -11,14 +11,6 @@ const floorArray = array => {
     array.forEach(element => {element = Math.floor(element)});
     return array;
 }
-const findElement = (array,element) => {
-    for (let i = 0; i < array.length; i++) {
-        if(array[i] == element){
-            return i;
-        }
-    }
-    return -1;
-}
 //alters a value by a random value within a given amplitude
 const perlin = (currentValue,recursions,amplitude,floor=-Number.MAX_VALUE,roof=Number.MAX_VALUE) => {
     let array = [];
@@ -63,4 +55,4 @@ const inRange = (array,point,range) => {
     }
     return points;
 }
-export{random,floorArray,findElement,perlin,round,closestPoint,inRange};
+export{random,floorArray,perlin,round,closestPoint,inRange};
