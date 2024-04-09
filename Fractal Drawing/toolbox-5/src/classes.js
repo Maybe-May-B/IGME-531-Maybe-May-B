@@ -295,7 +295,7 @@ class Canvas {
             this.ctx[property] = elementProperties[property];
         }
     }
-    print = destination => {
+    draw = () => {
         this.elements.forEach(element=> {
             ctx.save();
             ctx.beginPath();
@@ -309,6 +309,9 @@ class Canvas {
             ctx.closePath();
             ctx.restore();
         });
+    }
+    print = destination => {
+        destination.append(this.canvas);
     }
 }
 class SVG {

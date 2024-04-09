@@ -27,7 +27,23 @@ const init = () => {
 }
 
 const drawFractal = () => {
-    //
+    const rules = {
+        'l':'ltltl',
+        't':'ttt'
+    };
+    const results = {
+        'l': () => {
+            //
+        },
+        't': () => {
+            this.angle += 90;
+            this.angle = this.angle % 360;
+        }
+    };
+    const properties = {
+        //
+    };
+    let fractal = new c.Fractal(rules,"ltltltl");
 }
 
 
