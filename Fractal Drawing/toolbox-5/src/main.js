@@ -1,49 +1,48 @@
 import * as c from "./classes.js";
-import * as h from "./helper.js";
 
-let shapeInstance, styleInstance;
 const init = () => {
-    shapeInstance = new c.Shape();
-    styleInstance = new c.Style();
-
-    const rules = {
-        'a':'bacab',
-        'b':'bb',
-    };
-    const results = {
-        'a': () => {},
-        'b': () => {},
-        'c': () => {}
-    };
-    const properties = {
-        sides: 0,
-        scale: 100
-    };
-    let fractal = new c.Fractal(rules,'a',results,properties);
-    for(let i=1; i<= 5;i++){
-        console.log(fractal.iterate(i));
-        fractal.reset();
-    }
+    drawFractal(new c.Point(300,300),{width:1500,height:600},"black",1,5,12);
 }
 
-const drawFractal = () => {
+const drawFractal = (start,dimensions,color,lineWidth,length,iterations) => {
+    const canvas = new c.Canvas('fractal-canvas',dimensions,[new c.Shape([],false)],{strokeStyle:color,lineWidth:lineWidth});
     const rules = {
-        'l':'ltltl',
-        't':'ttt'
+        'l':'ll',
+        'u':'ulu'
     };
     const results = {
         'l': () => {
-            //
+            if(fractal.point.x + fractal.length > fractal.dimensions.width || fractal.point.x - fractal.length < 0){
+                fractal.direction.x *= -1;
+            }
+            fractal.point.x += fractal.length * fractal.direction.x;
+            fractal.canvas.elements[0].add(new c.Point(fractal.point.x,fractal.point.y));
         },
-        't': () => {
-            this.angle += 90;
-            this.angle = this.angle % 360;
+        'u': () => {
+            if(fractal.point.y + fractal.length > fractal.dimensions.height || fractal.point.y - fractal.length < 0){
+                fractal.direction.y *= -1;
+            }
+            fractal.point.y += fractal.length * fractal.direction.y;
+            fractal.canvas.elements[0].add(new c.Point(fractal.point.x,fractal.point.y));
+        },
+        'o': () => {
+            fractal.canvas.elements[0].add(new c.Point(fractal.point.x,fractal.point.y));
+        },
+        'd': () => {
+            fractal.canvas.draw();
+            fractal.canvas.print(document.querySelector('body'));
         }
     };
     const properties = {
-        //
+        canvas: canvas,
+        length:length,
+        point: start,
+        dimensions:dimensions,
+        direction:{x:1,y:-1}
     };
-    let fractal = new c.Fractal(rules,"ltltltl");
+    let fractal = new c.Fractal(rules,"oud",results,properties);
+    fractal.iterate(iterations);
+    fractal.interpret();
 }
 
 
